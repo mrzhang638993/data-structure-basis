@@ -41,6 +41,15 @@ void   addElement(struct DynamicArray*  dynamicArray,int element)
 		dynamicArray->storage=dynamicArray->storage+1;
 	}
 }
+void  output(struct DynamicArray*  dynamicArray)
+{
+	int i=0;
+	printf("%d,%d\n",dynamicArray->storage,dynamicArray->capacity);  //7 和15
+	for(i=0;i<(int)dynamicArray->storage;i++)
+	{
+		printf("%d\n",*(dynamicArray->pHead+i));
+	}
+}
 int main(void)
 {
 	int i=0;
@@ -56,11 +65,7 @@ int main(void)
 	addElement(&dynamicArray,6);
 	addElement(&dynamicArray,7);
 	//  输出容量和数量
-	printf("%d,%d\n",dynamicArray.storage,dynamicArray.capacity);  //7 和15
-	for(i=0;i<(int)dynamicArray.storage;i++)
-	{
-		printf("%d\n",*(dynamicArray.pHead+i));
-	}
+	output(&dynamicArray);
 	// 这里面对应的是一个普通的变量的
 	free(dynamicArray.pHead);  // 释放元素空间
 	system("pause");
