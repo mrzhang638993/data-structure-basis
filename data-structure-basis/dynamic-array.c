@@ -19,6 +19,11 @@ void  init(struct DynamicArray*  dynamicArray)
 void   addElement(struct DynamicArray*  dynamicArray,int element)
 {
 	int i=0;
+	if (dynamicArray==NULL)  //  有指针的话，所有的都是需要进行判断的。
+	{
+		printf("传入的数据为空,请检查");
+		return ;
+	}
 	//  判断元素是否满了
 	if (dynamicArray->capacity==dynamicArray->storage)
 	{
@@ -44,6 +49,12 @@ void   addElement(struct DynamicArray*  dynamicArray,int element)
 void  output(struct DynamicArray*  dynamicArray)
 {
 	int i=0;
+	//  需要进行空的判断的，可以减少bug
+	if (dynamicArray==NULL)
+	{
+		printf("传入的数据为空,请检查");
+		return ;
+	}
 	printf("%d,%d\n",dynamicArray->storage,dynamicArray->capacity);  //7 和15
 	for(i=0;i<(int)dynamicArray->storage;i++)
 	{
