@@ -8,10 +8,15 @@ void  addElement(struct DynamicArray*  dynamicArray,int element);
 void  output(struct DynamicArray*  dynamicArray);
 void  addElementByIndex(struct DynamicArray*  dynamicArray,int  index,int element);
 void  isFull(struct DynamicArray*  dynamicArray);
+void  deletTailElement(struct DynamicArray*  dynamicArray);
+void  deletAllElements(struct DynamicArray*  dynamicArray);
+void  releaseAllElements(struct DynamicArray*  dynamicArray);
+void  deleteElementByIndex(struct DynamicArray*  dynamicArray,int index);
+
 //  结构体声明
 struct DynamicArray
 {
-	int *pHead;  // 记录动态数组的首位置，代表的是指针的首地址的，不能移动的。
+	int *pHead;  // 记录动态数组的首位置，代表的是指针的首地址的，不能移动的。释放元素对应的释放对应的数组空间的
 	unsigned  int capacity ;  //  数组的容量
 	unsigned  int   storage ;  //  已存储的元素的数量
 };
@@ -132,6 +137,70 @@ void   isFull(struct DynamicArray*  dynamicArray)
 		dynamicArray->capacity=dynamicArray->capacity+10;
 	}
 }
+//  通过storage控制元素输出的。
+//  下面是删除元素的操作：删除尾部元素，删除中间的任意的个数，以及删除全部的元素。
+//  删除元素的时候不需要精简空间的，原来的空间还是保留的。所以容量是不变的。
+void   deletTailElement(struct DynamicArray*  dynamicArray)
+{
+	//  参数的合法性校验。
+	if (dynamicArray==NULL)
+	{
+		printf("传入的数据为空,请检查");
+		return ;
+	}
+	dynamicArray->storage=dynamicArray->storage-1;
+}
+//  删除所有的元素。
+void   deletAllElements(struct DynamicArray*  dynamicArray)
+{
+	//  参数的合法性校验。
+	if (dynamicArray==NULL)
+	{
+		printf("传入的数据为空,请检查");
+		return ;
+	}
+	dynamicArray->storage=0;
+	//  释放动态数组
+	//dynamicArray->capacity=0;
+	//free(dynamicArray);
+	//dynamicArray->pHead=NULL;
+}
+
+void  deleteElementByIndex(struct DynamicArray*  dynamicArray,int index)
+{
+	int  i=0;
+	//  参数的合法性校验。
+	if (dynamicArray==NULL)
+	{
+		printf("传入的数据为空,请检查");
+		return ;
+	}
+	if (index>((int)(dynamicArray->storage)-1))
+	{
+		printf("传递的下标存在问题,请检查");
+		return ;
+	}
+	//  开始删除元素
+	for (i=index;i<(int)dynamicArray->storage;i++)
+	{
+		*((dynamicArray->pHead)+i)=*((dynamicArray->pHead)+i+1);
+	}
+	dynamicArray->storage=dynamicArray->storage-1;
+}
+void  releaseAllElements(struct DynamicArray*  dynamicArray)
+{
+	//  参数的合法性校验。
+	if (dynamicArray==NULL)
+	{
+		printf("传入的数据为空,请检查");
+		return ;
+	}
+	dynamicArray->storage=0;
+	//  释放动态数组
+	dynamicArray->capacity=0;
+	free(dynamicArray);
+    dynamicArray->pHead=NULL;
+}
 int main(void)
 {
 	int i=0;
@@ -147,7 +216,13 @@ int main(void)
 	addElement(&dynamicArray,7);
 	addElementByIndex(&dynamicArray,5,35);
 	addElementByIndex(&dynamicArray,6,78);
+	deletTailElement(&dynamicArray);
+	deletTailElement(&dynamicArray);
+	output(&dynamicArray);
+	deleteElementByIndex(&dynamicArray,4);
 	//  输出容量和数量
+	output(&dynamicArray);
+	deleteElementByIndex(&dynamicArray,8);
 	output(&dynamicArray);
 	// 这里面对应的是一个普通的变量的
 	free(dynamicArray.pHead);  // 释放元素空间
