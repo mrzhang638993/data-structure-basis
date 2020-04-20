@@ -201,31 +201,31 @@ void  releaseAllElements(struct DynamicArray*  dynamicArray)
 	free(dynamicArray);
     dynamicArray->pHead=NULL;
 }
-int main(void)
-{
-	int i=0;
-	// 初始化容量的大小
-	struct DynamicArray  dynamicArray;
-	init(&dynamicArray);  //  初始化结构体。
-	addElement(&dynamicArray,1);
-	addElement(&dynamicArray,2);
-	addElement(&dynamicArray,3);
-	addElement(&dynamicArray,4);
-	addElement(&dynamicArray,5);
-	addElement(&dynamicArray,6);
-	addElement(&dynamicArray,7);
-	addElementByIndex(&dynamicArray,5,35);
-	addElementByIndex(&dynamicArray,6,78);
-	deletTailElement(&dynamicArray);
-	deletTailElement(&dynamicArray);
-	output(&dynamicArray);
-	deleteElementByIndex(&dynamicArray,4);
-	//  输出容量和数量
-	output(&dynamicArray);
-	deleteElementByIndex(&dynamicArray,8);
-	output(&dynamicArray);
-	// 这里面对应的是一个普通的变量的
-	free(dynamicArray.pHead);  // 释放元素空间
-	system("pause");
-	return 0;
-}
+//int main(void)
+//{
+//	int i=0;
+//	// 初始化容量的大小
+//	struct DynamicArray  dynamicArray;
+//	init(&dynamicArray);  //  初始化结构体。
+//	addElement(&dynamicArray,1);
+//	addElement(&dynamicArray,2);
+//	addElement(&dynamicArray,3);
+//	addElement(&dynamicArray,4);
+//	addElement(&dynamicArray,5);
+//	addElement(&dynamicArray,6);
+//	addElement(&dynamicArray,7);
+//	addElementByIndex(&dynamicArray,5,35);
+//	addElementByIndex(&dynamicArray,6,78);
+//	deletTailElement(&dynamicArray);
+//	deletTailElement(&dynamicArray);
+//	output(&dynamicArray);
+//	deleteElementByIndex(&dynamicArray,4);
+//	//  输出容量和数量
+//	output(&dynamicArray);
+//	deleteElementByIndex(&dynamicArray,8);
+//	output(&dynamicArray);
+//	// 这里面对应的是一个普通的变量的
+//	free(dynamicArray.pHead);  // 释放元素空间
+//	system("pause");
+//	return 0;
+//}
