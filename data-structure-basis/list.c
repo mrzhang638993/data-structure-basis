@@ -17,8 +17,11 @@ void  scanList();
 struct  Node* selectNode(int a);
 void  freeList();
 void  freePartialList(int a);
-void insertElementByIndexBefore(int index, int a);
-void insertElementByIndexAfter(int index, int a);
+void  insertElementByIndexBefore(int index, int a);
+void  insertElementByIndexAfter(int index, int a);
+void  deleteListHead();
+void  deleteTailList();
+void  deleteElementsByValue(int value);
 
 
 //  初始化链表,创建链表的方式包括头部添加和尾部添加的
@@ -218,7 +221,119 @@ void insertElementByIndexAfter(int index, int a)
 		newNode->pNext = beforeNode;
 	}
 }
+//头节点删除操作
+void   deleteListHead()
+{
+	//  释放头节点，需要判断，假设只有一个节点，头节点对应的也是尾节点。
+	if (!headNode)
+	{
+		printf("链表为空，不需要进行释放");
+		return;
+	}
+	if (!headNode->pNext) //  只有一个节点
+	{
+		free(headNode);
+		return;
+	}
+	struct  Node* node = headNode;
+	headNode = node->pNext;
+	free(node);
+}
+//  执行尾删除操作
+void deleteTailList()
+{
+	if (!tailNode)  // 对应的尾节点不存在
+	{
+		printf("链表为空，不需要进行删除操作");
+		return;
+	}
+	if (headNode == tailNode) //  链表只存在一个元素的话，可以直接删除的
+	{
+		free(tailNode);
+		headNode = NULL;
+		tailNode = NULL;
+		return;
+	}
+	//  链表存在多个节点的话，尾节点的前面一个节点作为尾节点的。
+	struct  Node* node2 = headNode; 
+	while (node2)
+	{
+		if (node2->pNext == tailNode)
+		{
+			struct  Node* endNode = tailNode;
+			tailNode = node2;
+			free(endNode);
+			tailNode->pNext = NULL; //  需要注意的，这个很关键
+			return;
+		}
+		node2 = node2->pNext;
+	}
+}
+//  删除指定的节点,根据value实现删除操作
+void  deleteElementsByValue(int value)
+{
+	if (!headNode)
+	{
+		printf("链表为空，不需要进行删除");
+		return;
+	}
+	struct  Node* nodeResult = selectNode(value);
+	if (!nodeResult)
+	{
+		printf("元素不存在,请勿删除");
+		return;
+	}
+	//  元素存在，执行删除操作
+	//  只有一个元素的话，
+	if (headNode==tailNode)
 
+	{
+		free(nodeResult);
+		headNode = NULL;
+		tailNode = NULL;
+		return;
+	}
+	// 有两个节点的,一个头节点,一个尾部节点
+	if (headNode->pNext== tailNode)
+	{
+		//  需要判断,找到的是头结点还是尾部节点的
+		if (nodeResult== headNode)
+		{
+			deleteListHead();
+			return;
+		}
+		else
+		{
+			deleteTailList();
+			return;
+		}
+	}
+	//  存在多个元素的话，执行的是如下的操作的.假设找到的是头节点还是尾部节点的
+	if (nodeResult == headNode)
+	{
+		deleteListHead();
+		return;
+	}
+	if (nodeResult==tailNode)
+	{
+		deleteTailList();
+		return;
+	}
+	struct  Node* node2 = headNode;
+	while (node2)
+	{
+		if (node2->pNext == nodeResult)
+		{
+			node2->pNext = nodeResult->pNext;
+			free(nodeResult);
+			return;
+		}
+		node2 = node2->pNext;
+	}
+}
+//栈:头添加+头删除
+//队列:头添加+尾删除，尾添加+头删除
+//删除指定节点
 int  main(void)
 {
 	//initList(1);
@@ -247,7 +362,18 @@ int  main(void)
 	//freeList();
 	//freePartialList(8);
 	//insertElementByIndex(8, 12);
-	insertElementByIndexAfter(8, 12);
+	//insertElementByIndexAfter(8, 12);
+	/*deleteListHead();
+	deleteListHead();
+	deleteListHead();
+	deleteTailList();
+	deleteTailList();
+	deleteTailList();
+	deleteTailList();
+	deleteTailList();*/
+	//deleteElementsByValue(8);
+	//deleteElementsByValue(1);
+	deleteElementsByValue(10);
 	system("pause");
 	return 0;
 }
