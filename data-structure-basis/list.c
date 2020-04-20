@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+//  0xcdcdcdcd  对应的是野指针的，需要特别的敏感，是否忘记初始化元素了
 struct  Node
 {
 	int a;
@@ -9,6 +9,18 @@ struct  Node
 //  初始化头节点指针和尾节点指针
 struct  Node *  headNode=NULL; 
 struct  Node *  tailNode=NULL;
+
+//  函数声明
+void  tailInsertToList(int a);
+void  headInsertToList(int a);
+void  scanList();
+struct  Node* selectNode(int a);
+void  freeList();
+void  freePartialList(int a);
+void insertElementByIndexBefore(int index, int a);
+void insertElementByIndexAfter(int index, int a);
+
+
 //  初始化链表,创建链表的方式包括头部添加和尾部添加的
 void  tailInsertToList(int a )
 {
@@ -51,6 +63,161 @@ void  headInsertToList(int a)
 		headNode = node;
 	}
 }
+//链表的遍历操作,全表的遍历操作
+void  scanList()
+{
+	struct  Node* node = headNode; // 对应的是头节点的指针的。
+	//  遍历的过程中，头指针是不能变化的
+	while (node)  // 最后的一个节点的尾指针对应的是NULL的
+	{
+		printf("%d\n", node->a);
+		node = node->pNext;
+	}
+}
+//  查询指定的节点,查询数据传递为a
+struct  Node* selectNode(int a)
+{
+	struct  Node* node = headNode; // 对应的是头节点的指针的。
+	while (node)  // 最后的一个节点的尾指针对应的是NULL的
+	{
+		if (a==node->a)
+		{
+			return node;
+		}
+		node = node->pNext;
+	}
+	return NULL;
+}
+//  链表删除和释放:下面释放的是全部的链表
+void  freeList()
+{
+	struct  Node* node = headNode;
+	struct  Node* node1 = NULL;
+	while (node)
+	{
+		//  释放当前的节点，节点往后移动
+		node1 = node->pNext;
+		free(node);
+		node = node1;
+	}
+	//  头节点和尾节点全部设置为NULL
+	headNode = NULL;
+	tailNode = NULL;
+}
+//  释放部分链表，根据条件释放
+void  freePartialList(int a)
+{
+	struct  Node* node = headNode; // 对应的是头节点的指针的。
+	while (node)  // 最后的一个节点的尾指针对应的是NULL的
+	{
+		if (a == node->a)
+		{
+			//  节点的群面一个节点之后他后续的节点的，需要判断位置
+			if (node == headNode)
+			{
+				//  头节点指针
+				headNode = node->pNext;
+				free(node);
+				return;
+			}
+			else if (node == tailNode)
+			{
+				//  释放尾节点，需要向前移动尾部指针
+				tailNode = (--node);
+				free(node);
+				return;
+			}
+			else
+			{
+				struct  Node* node2 = headNode;
+				while (node2)
+				{
+					if (node2->pNext == node) {
+						node2->pNext = node->pNext;
+						free(node);
+						return;
+					}
+					node2 = node2->pNext;
+				}
+			}
+		}
+		// 节点已经释放了，后续的pNext就没什么意义了
+		node = node->pNext;
+	}
+}
+//  在指定的位置前面插入元素
+void insertElementByIndexBefore(int index, int a)
+{
+	if (headNode==NULL) //  插入的是首节点的信息
+	{
+		struct  Node* node = (struct  Node*)malloc(sizeof(struct  Node));
+		node->a = a;
+		node->pNext = NULL;
+		headNode = node;
+		tailNode = node;
+	}
+	struct  Node*  nodeResult=selectNode(index);
+	if (!nodeResult)
+	{
+		printf("对应的节点不存在");
+	}
+	//  节点存在，需要创建节点，在找到的位置增加一个节点
+	struct  Node*  newNode= (struct  Node*)malloc(sizeof(struct  Node));
+	newNode->a = a;
+	//  问题：找到的是第一个节点的话，对应的需要处理
+	if (nodeResult == headNode)
+	{
+		newNode->pNext = nodeResult;
+		headNode = newNode;
+	}
+	else
+	{
+		//  链表的存储空间是随机的
+		struct  Node* node2 = headNode;
+		while (node2)
+		{
+			if (node2->pNext == nodeResult) {
+				node2->pNext = newNode;
+				newNode->pNext = nodeResult;
+				return;
+			}
+			node2 = node2->pNext;
+		}
+	}
+}
+//  在指定的位置后面插入元素
+void insertElementByIndexAfter(int index, int a)
+{
+	if (headNode == NULL) //  插入的是首节点的信息
+	{
+		struct  Node* node = (struct  Node*)malloc(sizeof(struct  Node));
+		node->a = a;
+		node->pNext = NULL;
+		headNode = node;
+		tailNode = node;
+	}
+	struct  Node* nodeResult = selectNode(index);
+	if (!nodeResult)
+	{
+		printf("对应的节点不存在");
+	}
+	//  节点存在，需要创建节点，在找到的位置增加一个节点
+	struct  Node* newNode = (struct  Node*)malloc(sizeof(struct  Node));
+	newNode->a = a;
+	//  问题：找到的是尾节点的话，怎么处理
+	if (nodeResult == tailNode)
+	{
+		nodeResult->pNext = newNode;
+		tailNode = newNode;
+	}
+	else
+	{
+		//  不是尾节点的话，直接在节点后面增加即可的
+		struct  Node*   beforeNode=nodeResult->pNext;
+		nodeResult->pNext = newNode;
+		newNode->pNext = beforeNode;
+	}
+}
 
 int  main(void)
 {
@@ -66,6 +233,21 @@ int  main(void)
 	{
 		headInsertToList(a[i]);
 	}
+	//scanList();
+	/*struct  Node*  resultNode=selectNode(20);
+	if (resultNode)
+	{
+		printf("%d\n", resultNode->a);
+	}
+	else
+	{
+		printf("该节点不存在");
+	}*/
+	//  空间释放操作
+	//freeList();
+	//freePartialList(8);
+	//insertElementByIndex(8, 12);
+	insertElementByIndexAfter(8, 12);
 	system("pause");
 	return 0;
 }

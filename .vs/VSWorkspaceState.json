@@ -2,7 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\data-structure-basis",
-    "\\data-structure-basis\\Debug"
+    "\\data-structure-basis\\Debug",
+    "\\Debug",
+    "\\ipch"
   ],
   "SelectedNode": "\\data-structure-basis\\Debug\\list.obj",
   "PreviewInSolutionExplorer": false
