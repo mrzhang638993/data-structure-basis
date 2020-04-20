@@ -79,6 +79,7 @@
     <ClCompile Include="array.c" />
     <ClCompile Include="C:\Users\Administrator\Desktop\list.c" />
     <ClCompile Include="dynamic-array.c" />
+    <ClCompile Include="header-pointer-list.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
