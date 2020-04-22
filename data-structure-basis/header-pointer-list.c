@@ -6,11 +6,11 @@ struct Node
 	int a;
 	struct Node* pNext;
 };
-//  Í·Ö¸ÕëºÍÎ²²¿Ö¸ÕëµÄ¶¨Òå
+//  å¤´æŒ‡é’ˆå’Œå°¾éƒ¨æŒ‡é’ˆçš„å®šä¹‰
 struct Node* g_pHead=NULL;
 struct Node* g_pEnd=NULL;
 
-//  º¯ÊýÉùÃ÷
+//  å‡½æ•°å£°æ˜Ž
 struct Node* createNode(int a);
 void   addListTail(int a);
 void   initListHeader();
@@ -20,86 +20,87 @@ void   randomAddElement(int index, int a);
 void   deleteHeadNode();
 void   deleteRandomNode(int a);
 void   deleteTailNode();
+void   freeAllList();
 
-// Î²²¿Ìí¼Ó,¸øÁ´±íµÄÎ²²¿Ôö¼ÓÔªËØ
+// å°¾éƒ¨æ·»åŠ ,ç»™é“¾è¡¨çš„å°¾éƒ¨å¢žåŠ å…ƒç´ 
 void  addListTail(int a)
 {
 	struct Node* newNode = createNode(a);
 	if (NULL==newNode)
 	{
-		printf("ÄÚ´æÉêÇëÊ§°Ü£¬ÄÚ´æ²»×ã");
+		printf("å†…å­˜ç”³è¯·å¤±è´¥ï¼Œå†…å­˜ä¸è¶³");
 		return;
 	}
 	g_pEnd->pNext = newNode;
    g_pEnd = newNode;
-   //if (g_pEnd==NULL)  //  Ã»ÓÐÎ²²¿ÔªËØµÄ»°£¬Ôö¼ÓÎ²²¿ÔªËØ
+   //if (g_pEnd==NULL)  //  æ²¡æœ‰å°¾éƒ¨å…ƒç´ çš„è¯ï¼Œå¢žåŠ å°¾éƒ¨å…ƒç´ 
    //{
 	  // g_pEnd = newNode;
 	  // g_pHead->pNext = newNode;
    //}
-   //else  //ÒÑ¾­ÓÐÁËÎ²²¿ÔªËØµÄ»°
+   //else  //å·²ç»æœ‰äº†å°¾éƒ¨å…ƒç´ çš„è¯
    //{
 	  //
    //}
 }
-//  Í·²¿ÔªËØÌí¼Ó
+//  å¤´éƒ¨å…ƒç´ æ·»åŠ 
 void addListHead(int a )
 {
-	 //  Ôö¼ÓÍ·²¿½Úµã£¬¶ÔÓ¦µÄÁ´½ÓµÄÊÇÍ·½áµãµÄÏÂÒ»¸ö½ÚµãµÄ¡£
+	 //  å¢žåŠ å¤´éƒ¨èŠ‚ç‚¹ï¼Œå¯¹åº”çš„é“¾æŽ¥çš„æ˜¯å¤´ç»“ç‚¹çš„ä¸‹ä¸€ä¸ªèŠ‚ç‚¹çš„ã€‚
 	struct Node* newNode = createNode(a);
 	if (NULL == newNode)
 	{
-		printf("ÄÚ´æÉêÇëÊ§°Ü£¬ÄÚ´æ²»×ã");
+		printf("å†…å­˜ç”³è¯·å¤±è´¥ï¼Œå†…å­˜ä¸è¶³");
 		return;
 	}
 	newNode->pNext = g_pHead->pNext;
 	g_pHead->pNext = newNode;
 }
-//  ³õÊ¼»¯Í·²¿²Ù×÷
+//  åˆå§‹åŒ–å¤´éƒ¨æ“ä½œ
 void initListHeader()
 {
-	//  Á´±í¿ÕÍ·,Ê²Ã´Êý¾Ý¶¼Ã»ÓÐµÄ
-	g_pHead = (struct Node*)malloc(sizeof(struct Node));  //  Í·²¿µÄ³õÊ¼»¯ºÜÖØÒªµÄ
+	//  é“¾è¡¨ç©ºå¤´,ä»€ä¹ˆæ•°æ®éƒ½æ²¡æœ‰çš„
+	g_pHead = (struct Node*)malloc(sizeof(struct Node));  //  å¤´éƒ¨çš„åˆå§‹åŒ–å¾ˆé‡è¦çš„
 	if (NULL == g_pHead)
 	{
-		printf("ÄÚ´æÉêÇëÊ§°Ü£¬ÄÚ´æ²»×ã");
+		printf("å†…å­˜ç”³è¯·å¤±è´¥ï¼Œå†…å­˜ä¸è¶³");
 		return;
 	}
 	g_pHead->pNext = NULL;
-	// ¿ÉÒÔÖ±½Ó¶ÔÎ²²¿½Úµã½øÐÐ³õÊ¼»¯µÄ
+	// å¯ä»¥ç›´æŽ¥å¯¹å°¾éƒ¨èŠ‚ç‚¹è¿›è¡Œåˆå§‹åŒ–çš„
 	g_pEnd = g_pHead;
 }
 struct Node*  createNode(int a)
 {
-	//  ÄÚ´æÉêÇë£¬¶ÔÓ¦µÄÊÇÐèÒªÅÐ¶ÏÊÇ·ñ³É¹¦µÄ
+	//  å†…å­˜ç”³è¯·ï¼Œå¯¹åº”çš„æ˜¯éœ€è¦åˆ¤æ–­æ˜¯å¦æˆåŠŸçš„
 	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-	if (NULL==newNode)  //  ºóÐøµÄ¿Õ¼äÉêÇëÊ§°Ü´¦ÀíµÄ
+	if (NULL==newNode)  //  åŽç»­çš„ç©ºé—´ç”³è¯·å¤±è´¥å¤„ç†çš„
 	{
-		printf("¿Õ¼äÉêÇëÊ§°Ü");
+		printf("ç©ºé—´ç”³è¯·å¤±è´¥");
 	}
 	newNode->a = a;
-	newNode->pNext = NULL;  //  ½¨Òé³õÊ¼»¯²Ù×÷£¬³õÊ¼»¯ºÜÖØÒªµÄ¡£
+	newNode->pNext = NULL;  //  å»ºè®®åˆå§‹åŒ–æ“ä½œï¼Œåˆå§‹åŒ–å¾ˆé‡è¦çš„ã€‚
 	return newNode;
 }
-//  Á´±íµÄ±éÀú,ÐèÒª×¢ÒâµÄÊÇ²»Òª¶¯Í·Ö¸ÕëµÄ
+//  é“¾è¡¨çš„éåŽ†,éœ€è¦æ³¨æ„çš„æ˜¯ä¸è¦åŠ¨å¤´æŒ‡é’ˆçš„
 void  scanForList()
 {
-	struct Node* newNode = g_pHead->pNext;  // ÕâÑùµÄ²ÅÊÇ±éÀúµÄÆðµãµÄ£¬²»ÒªÊ¹ÓÃg_pHead
+	struct Node* newNode = g_pHead->pNext;  // è¿™æ ·çš„æ‰æ˜¯éåŽ†çš„èµ·ç‚¹çš„ï¼Œä¸è¦ä½¿ç”¨g_pHead
 	while (NULL!= newNode)
 	{
 		printf("%d\n", newNode->a);
 		newNode = newNode->pNext;
 	}
 }
-//   ÈÎÒâÎ»ÖÃÔö¼ÓÔªËØ
+//   ä»»æ„ä½ç½®å¢žåŠ å…ƒç´ 
 void   randomAddElement(int index,int a)
 {
-	if (g_pHead->pNext == NULL)  //  ¶ÔÓ¦µÄÊÇÒ»¸ö¿ÕµÄÁ´±í£¬Ã»ÓÐÁ´±íÊý¾Ý
+	if (g_pHead->pNext == NULL)  //  å¯¹åº”çš„æ˜¯ä¸€ä¸ªç©ºçš„é“¾è¡¨ï¼Œæ²¡æœ‰é“¾è¡¨æ•°æ®
 	{
 		struct Node* newNode=createNode(a);
 		if (NULL==newNode)
 		{
-		   printf("·ÖÅäÄÚ´æ¿Õ¼äÊ§°Ü£¬ÄÚ´æ²»×ã");
+		   printf("åˆ†é…å†…å­˜ç©ºé—´å¤±è´¥ï¼Œå†…å­˜ä¸è¶³");
 		   return;
 		}
 		g_pHead->pNext = newNode;
@@ -107,26 +108,26 @@ void   randomAddElement(int index,int a)
 	}
 	else
 	{
-		//  ²éÑ¯ÔªËØindexÊÇ·ñ´æÔÚ
+		//  æŸ¥è¯¢å…ƒç´ indexæ˜¯å¦å­˜åœ¨
 		struct Node* nodeValues = queryNodesByValue(index);
 		if (NULL == nodeValues)
 		{
-			printf("²éÎÞ´Ë½Úµã");
+			printf("æŸ¥æ— æ­¤èŠ‚ç‚¹");
 			return;
 		}
-		//  ÕÒµ½ÔªËØµÄ»°£¬ÐèÒªÉæ¼°µ½ÔªËØµÄÎ»ÖÃµÄ¡£
+		//  æ‰¾åˆ°å…ƒç´ çš„è¯ï¼Œéœ€è¦æ¶‰åŠåˆ°å…ƒç´ çš„ä½ç½®çš„ã€‚
 		if (nodeValues == g_pEnd)
 		{
-			// Î²²¿½Úµã£¬¶ÔÓ¦µÄÖ´ÐÐÎ²²¿½ÚµãµÄ²Ù×÷µÄ¡£
+			// å°¾éƒ¨èŠ‚ç‚¹ï¼Œå¯¹åº”çš„æ‰§è¡Œå°¾éƒ¨èŠ‚ç‚¹çš„æ“ä½œçš„ã€‚
 			addListTail(a);  //  
 		}
 		else
 		{
-			//  ÖÐ¼äÔªËØµÄÔö¼Ó²Ù×÷,¶ÔÓ¦µÄÔÚÔ­À´µÄÔªËØºóÃæÔö¼ÓÔªËØµÄ¡£
+			//  ä¸­é—´å…ƒç´ çš„å¢žåŠ æ“ä½œ,å¯¹åº”çš„åœ¨åŽŸæ¥çš„å…ƒç´ åŽé¢å¢žåŠ å…ƒç´ çš„ã€‚
 			struct Node* newNode = createNode(a);
 			if (NULL == newNode)
 			{
-				printf("·ÖÅäÄÚ´æ¿Õ¼äÊ§°Ü£¬ÄÚ´æ²»×ã");
+				printf("åˆ†é…å†…å­˜ç©ºé—´å¤±è´¥ï¼Œå†…å­˜ä¸è¶³");
 				return;
 			}
 			newNode->pNext = nodeValues->pNext;
@@ -134,12 +135,12 @@ void   randomAddElement(int index,int a)
 		}
 	}
 }
-//  ²éÕÒÔªËØµÄÎ»ÖÃ,Ã»ÓÐµÄ»°£¬¶ÔÓ¦µÄ·µ»ØµÄÊÇNULL¿Õ¼äµÄµØÖ·µÄ
+//  æŸ¥æ‰¾å…ƒç´ çš„ä½ç½®,æ²¡æœ‰çš„è¯ï¼Œå¯¹åº”çš„è¿”å›žçš„æ˜¯NULLç©ºé—´çš„åœ°å€çš„
 struct Node* queryNodesByValue(int value)
 {
-	if (g_pHead==g_pEnd) //  ¿ÕÁ´±íµÄ»°¾Í²»ÓÃ³ÔÕÒÁË
+	if (g_pHead==g_pEnd) //  ç©ºé“¾è¡¨çš„è¯å°±ä¸ç”¨åƒæ‰¾äº†
 	{
-		printf("¿ÕµÄÁ´±í£¬²»ÓÃ²éÕÒÁË");
+		printf("ç©ºçš„é“¾è¡¨ï¼Œä¸ç”¨æŸ¥æ‰¾äº†");
 		return NULL;
 	}
 	struct Node* newNode = g_pHead->pNext;
@@ -153,20 +154,20 @@ struct Node* queryNodesByValue(int value)
 	}
 	return NULL;
 }
-//  É¾³ýÍ·½áµã
+//  åˆ é™¤å¤´ç»“ç‚¹
 void  deleteHeadNode()
 {
-	//  É¾³ý½ÚµãµÄÊ±ºò£¬Ò»¶¨Òª¼ÇÒä½ÚµãµÄ£¬²»ÒªÖ±½ÓÉ¾³ý½ÚµãµÄ¡£
-	//  É¾³ýÍ·½áµã
-	struct Node* newNode = g_pHead->pNext; //  Í·½áµãÔªËØ
-	//  ÐèÒªÅÐ¶ÏÊÇ·ñÊÇÖ»ÓÐÒ»¸öÔªËØµÄ¡£
-	//  Ö»ÓÐÒ»¸öÍ·½áµãµÄ£¬¿Ï¶¨ÊÇÕÒ²»µ½ÔªËØµÄ¡£
-	if (g_pHead==g_pEnd)  //  Ö»ÓÐÒ»¸öÔªËØ
+	//  åˆ é™¤èŠ‚ç‚¹çš„æ—¶å€™ï¼Œä¸€å®šè¦è®°å¿†èŠ‚ç‚¹çš„ï¼Œä¸è¦ç›´æŽ¥åˆ é™¤èŠ‚ç‚¹çš„ã€‚
+	//  åˆ é™¤å¤´ç»“ç‚¹
+	struct Node* newNode = g_pHead->pNext; //  å¤´ç»“ç‚¹å…ƒç´ 
+	//  éœ€è¦åˆ¤æ–­æ˜¯å¦æ˜¯åªæœ‰ä¸€ä¸ªå…ƒç´ çš„ã€‚
+	//  åªæœ‰ä¸€ä¸ªå¤´ç»“ç‚¹çš„ï¼Œè‚¯å®šæ˜¯æ‰¾ä¸åˆ°å…ƒç´ çš„ã€‚
+	if (g_pHead==g_pEnd)  //  åªæœ‰ä¸€ä¸ªå…ƒç´ 
 	{
-		printf("Á´±íÎª¿Õ£¬²»ÐèÒªÉ¾³ýÍ·ÔªËØµÄ");
+		printf("é“¾è¡¨ä¸ºç©ºï¼Œä¸éœ€è¦åˆ é™¤å¤´å…ƒç´ çš„");
 		return;
 	}
-	else if (g_pHead->pNext==g_pEnd) //  ¶ÔÓ¦µÄÖ»ÓÐÒ»¸öÔªËØ½Úµã
+	else if (g_pHead->pNext==g_pEnd) //  å¯¹åº”çš„åªæœ‰ä¸€ä¸ªå…ƒç´ èŠ‚ç‚¹
 	{
 		free(newNode);
 		g_pHead->pNext = NULL;
@@ -180,37 +181,37 @@ void  deleteHeadNode()
 		return;
 	}
 }
-//  É¾³ýÈÎÒâ½Úµã
+//  åˆ é™¤ä»»æ„èŠ‚ç‚¹
 void deleteRandomNode(int a)
 {
-	//  ÅÐ¶ÏÁ´±í²»´æÔÚ½ÚµãµÄ»°£¬²»ÐèÒª½øÐÐÉ¾³ýµÄ
-	if (g_pHead == g_pEnd)  //  Ö»ÓÐÒ»¸öÔªËØ
+	//  åˆ¤æ–­é“¾è¡¨ä¸å­˜åœ¨èŠ‚ç‚¹çš„è¯ï¼Œä¸éœ€è¦è¿›è¡Œåˆ é™¤çš„
+	if (g_pHead == g_pEnd)  //  åªæœ‰ä¸€ä¸ªå…ƒç´ 
 	{
-		printf("Á´±íÎª¿Õ£¬²»ÐèÒªÉ¾³ýÍ·ÔªËØµÄ");
+		printf("é“¾è¡¨ä¸ºç©ºï¼Œä¸éœ€è¦åˆ é™¤å¤´å…ƒç´ çš„");
 		return;
 	}
 	struct Node*  node=queryNodesByValue(a);
 	if (!node)
 	{
-		printf("½Úµã²»´æÔÚ,²»ÐèÒªÉ¾³ýµÄ");
+		printf("èŠ‚ç‚¹ä¸å­˜åœ¨,ä¸éœ€è¦åˆ é™¤çš„");
 		return;
 	}
-	//  ½Úµã´æÔÚ£¬ÐèÒªÅÐ¶Ï¡£
-	//  Èç¹ûÊÇÍ·½áµãµÄ»°£¬´¦ÀíÈçÏÂµÄ
+	//  èŠ‚ç‚¹å­˜åœ¨ï¼Œéœ€è¦åˆ¤æ–­ã€‚
+	//  å¦‚æžœæ˜¯å¤´ç»“ç‚¹çš„è¯ï¼Œå¤„ç†å¦‚ä¸‹çš„
 	if (g_pHead->pNext == node)
 	{
 		deleteHeadNode();
 	}
-	else if(node->pNext==NULL)  //  Î²½áµãµÄ»°£¬É¾³ýÎ²²¿½ÚµãµÄ
+	else if(node->pNext==NULL)  //  å°¾ç»“ç‚¹çš„è¯ï¼Œåˆ é™¤å°¾éƒ¨èŠ‚ç‚¹çš„
 	{
 		deleteTailNode(node);
 	}
-	else  //  ´æÔÚµÄÊÇ¶à¸ö½ÚµãµÄ,É¾³ýÖÐ¼äµÄ½ÚµãµÄ¡£
+	else  //  å­˜åœ¨çš„æ˜¯å¤šä¸ªèŠ‚ç‚¹çš„,åˆ é™¤ä¸­é—´çš„èŠ‚ç‚¹çš„ã€‚
 	{
 		struct Node* newNode = g_pHead->pNext;
-		while (newNode)  // ²éÕÒÁ´±íµÄÔªËØµÄ
+		while (newNode)  // æŸ¥æ‰¾é“¾è¡¨çš„å…ƒç´ çš„
 		{
-			if (newNode->pNext == node)  //  Ç°ÃæµÄÒ»¸ö½ÚµãµÄ
+			if (newNode->pNext == node)  //  å‰é¢çš„ä¸€ä¸ªèŠ‚ç‚¹çš„
 			{
 				newNode->pNext = node->pNext;
 				free(node);
@@ -220,16 +221,16 @@ void deleteRandomNode(int a)
 		}
 	}
 }
-//  É¾³ýÎ²²¿½Úµã
+//  åˆ é™¤å°¾éƒ¨èŠ‚ç‚¹
 void deleteTailNode(struct Node* newNode1)
 {
-	// ¶ÔÓ¦µÄÊÇ¿ÕÁ´µÄ²Ù×÷µÄ
+	// å¯¹åº”çš„æ˜¯ç©ºé“¾çš„æ“ä½œçš„
 	if (!g_pHead->pNext && !g_pEnd->pNext)
 	{
-		printf("¿ÕÁ´,²»ÐèÒªÉ¾³ý");
+		printf("ç©ºé“¾,ä¸éœ€è¦åˆ é™¤");
 		return;
 	}
-	//  Ö»ÓÐÒ»¸ö½ÚµãµÄÇé¿öÐèÒª½øÐÐÈçÏÂµÄ´¦ÀíµÄ¡£É¾³ýÁË½ÚµãµÄ»°£¬¶ÔÓ¦µÄ¾ÍÖ»Ê£ÏÂÍ·½áµãÁË
+	//  åªæœ‰ä¸€ä¸ªèŠ‚ç‚¹çš„æƒ…å†µéœ€è¦è¿›è¡Œå¦‚ä¸‹çš„å¤„ç†çš„ã€‚åˆ é™¤äº†èŠ‚ç‚¹çš„è¯ï¼Œå¯¹åº”çš„å°±åªå‰©ä¸‹å¤´ç»“ç‚¹äº†
 	if (g_pHead->pNext== newNode1)
 	{
 		g_pHead->pNext = NULL;
@@ -237,11 +238,11 @@ void deleteTailNode(struct Node* newNode1)
 		free(newNode1);
 		return;
 	}
-	//  ´æÔÚ¶à¸ö½ÚµãµÄÇé¿öÏÂ¡£
+	//  å­˜åœ¨å¤šä¸ªèŠ‚ç‚¹çš„æƒ…å†µä¸‹ã€‚
 	struct Node* newNode = g_pHead->pNext;
-	while (newNode)  // ²éÕÒÁ´±íµÄÔªËØµÄ
+	while (newNode)  // æŸ¥æ‰¾é“¾è¡¨çš„å…ƒç´ çš„
 	{
-		if (newNode->pNext==g_pEnd)  //  Ç°ÃæµÄÒ»¸ö½ÚµãµÄ
+		if (newNode->pNext==g_pEnd)  //  å‰é¢çš„ä¸€ä¸ªèŠ‚ç‚¹çš„
 		{
 			free(g_pEnd);
 			newNode->pNext = NULL;
@@ -251,16 +252,16 @@ void deleteTailNode(struct Node* newNode1)
 		newNode = newNode->pNext;
 	}
 }
-//  ÊÍ·ÅËùÓÐµÄÁ´±í
+//  é‡Šæ”¾æ‰€æœ‰çš„é“¾è¡¨
 void   freeAllList()
 {
-	// ½ÚµãÖ»ÓÐÒ»¸öÍ·ÔªËØµÄÇé¿öÏÂÊÍ·ÅµÄ
+	// èŠ‚ç‚¹åªæœ‰ä¸€ä¸ªå¤´å…ƒç´ çš„æƒ…å†µä¸‹é‡Šæ”¾çš„
 	if (g_pHead->pNext==NULL)
 	{
 		free(g_pHead);
 	}
 	struct Node* node = g_pHead->pNext;
-	while (node)  //  ½Úµã²»Îª¿ÕµÄÇé¿öÏÂ£¬¿ÉÒÔÉ¾³ý½ÚµãÔªËØ
+	while (node)  //  èŠ‚ç‚¹ä¸ä¸ºç©ºçš„æƒ…å†µä¸‹ï¼Œå¯ä»¥åˆ é™¤èŠ‚ç‚¹å…ƒç´ 
 	{
 		struct Node*  node1=node->pNext;
 		free(node);
@@ -279,7 +280,7 @@ int  main(void)
 	addListTail(40);
 	scanForList();
 	randomAddElement(20,100);
-	deleteHeadNode();  //  É¾³ýÍ·½áµã
+	deleteHeadNode();  //  åˆ é™¤å¤´ç»“ç‚¹
 	deleteRandomNode(10);
 	freeAllList();
 	system("pause");
