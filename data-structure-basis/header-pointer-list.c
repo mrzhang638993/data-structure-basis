@@ -108,12 +108,6 @@ void   randomAddElement(int index,int a)
 	else
 	{
 		//  查询元素index是否存在
-		struct Node* newNode = createNode(a);
-		if (NULL == newNode)
-		{
-			printf("分配内存空间失败，内存不足");
-			return;
-		}
 		struct Node* nodeValues = queryNodesByValue(index);
 		if (NULL == nodeValues)
 		{
@@ -124,11 +118,17 @@ void   randomAddElement(int index,int a)
 		if (nodeValues == g_pEnd)
 		{
 			// 尾部节点，对应的执行尾部节点的操作的。
-			addListTail(a);
+			addListTail(a);  //  
 		}
 		else
 		{
 			//  中间元素的增加操作,对应的在原来的元素后面增加元素的。
+			struct Node* newNode = createNode(a);
+			if (NULL == newNode)
+			{
+				printf("分配内存空间失败，内存不足");
+				return;
+			}
 			newNode->pNext = nodeValues->pNext;
 			nodeValues->pNext = newNode;
 		}
@@ -156,23 +156,39 @@ struct Node* queryNodesByValue(int value)
 //  删除头结点
 void  deleteHeadNode()
 {
+	//  删除节点的时候，一定要记忆节点的，不要直接删除节点的。
 	//  删除头结点
 	struct Node* newNode = g_pHead->pNext; //  头结点元素
 	//  需要判断是否是只有一个元素的。
-	if (g_pHead->pNext==g_pEnd)  //  只有一个元素
+	//  只有一个头结点的，肯定是找不到元素的。
+	if (g_pHead==g_pEnd)  //  只有一个元素
 	{
-		g_pEnd = g_pHead;
+		printf("链表为空，不需要删除头元素的");
+		return;
+	}
+	else if (g_pHead->pNext==g_pEnd) //  对应的只有一个元素节点
+	{
+		free(newNode);
 		g_pHead->pNext = NULL;
+		g_pEnd = g_pHead;
+		return;
 	}
 	else
 	{
 		g_pHead->pNext = newNode->pNext;
+		free(newNode);
+		return;
 	}
-	free(newNode);
 }
 //  删除任意节点
 void deleteRandomNode(int a)
 {
+	//  判断链表不存在节点的话，不需要进行删除的
+	if (g_pHead == g_pEnd)  //  只有一个元素
+	{
+		printf("链表为空，不需要删除头元素的");
+		return;
+	}
 	struct Node*  node=queryNodesByValue(a);
 	if (!node)
 	{
@@ -189,9 +205,19 @@ void deleteRandomNode(int a)
 	{
 		deleteTailNode(node);
 	}
-	else  //  存在的是多个节点的
+	else  //  存在的是多个节点的,删除中间的节点的。
 	{
-
+		struct Node* newNode = g_pHead->pNext;
+		while (newNode)  // 查找链表的元素的
+		{
+			if (newNode->pNext == node)  //  前面的一个节点的
+			{
+				newNode->pNext = node->pNext;
+				free(node);
+				return;
+			}
+			newNode = newNode->pNext;
+		}
 	}
 }
 //  删除尾部节点
@@ -206,10 +232,9 @@ void deleteTailNode(struct Node* newNode1)
 	//  只有一个节点的情况需要进行如下的处理的。删除了节点的话，对应的就只剩下头结点了
 	if (g_pHead->pNext== newNode1)
 	{
-		free(newNode1);
 		g_pHead->pNext = NULL;
 		g_pEnd = g_pHead;
-		g_pEnd->pNext = NULL;
+		free(newNode1);
 		return;
 	}
 	//  存在多个节点的情况下。
@@ -219,15 +244,32 @@ void deleteTailNode(struct Node* newNode1)
 		if (newNode->pNext==g_pEnd)  //  前面的一个节点的
 		{
 			free(g_pEnd);
-			g_pEnd = newNode;
 			newNode->pNext = NULL;
+			g_pEnd = newNode;
 			return;
 		}
 		newNode = newNode->pNext;
 	}
 }
+//  释放所有的链表
+void   freeAllList()
+{
+	// 节点只有一个头元素的情况下释放的
+	if (g_pHead->pNext==NULL)
+	{
+		free(g_pHead);
+	}
+	struct Node* node = g_pHead->pNext;
+	while (node)  //  节点不为空的情况下，可以删除节点元素
+	{
+		struct Node*  node1=node->pNext;
+		free(node);
+		g_pHead->pNext = node1;
+		node = node1;
+	}
+	free(g_pHead);
+}
 
-//  学习到了20分钟的
 int  main(void)
 {
 	initListHeader();
@@ -239,6 +281,7 @@ int  main(void)
 	randomAddElement(20,100);
 	deleteHeadNode();  //  删除头结点
 	deleteRandomNode(10);
+	freeAllList();
 	system("pause");
 	return 0;
 }
